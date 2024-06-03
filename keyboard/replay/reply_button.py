@@ -3,26 +3,34 @@ from telebot import types
 
 def welcome_btn():
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True,
-                                       row_width=2)
-    btn1 = types.KeyboardButton('О выставке')
+                                       row_width=3)
+    btn0 = types.KeyboardButton('О выставке')
+    btn1 = types.KeyboardButton('VIP участие')
     btn2 = types.KeyboardButton('Регистрация')
+
     btn3 = types.KeyboardButton('Забронировать площадь на 2025 год')
-    btn4 = types.KeyboardButton('Схема выставки')
+
     btn5 = types.KeyboardButton('Время работы выставки')
-    btn6 = types.KeyboardButton('Деловая программа')
-    btn7 = types.KeyboardButton('ТОП-спикеры')
+    btn10 = types.KeyboardButton('Как добраться')
+    btn4 = types.KeyboardButton('Схема выставки')
+
     btn8 = types.KeyboardButton('Назначить встречу на выставке')
     btn9 = types.KeyboardButton('Диалог с торгпредом')
-    btn10 = types.KeyboardButton('Как добраться')
+
+    btn7 = types.KeyboardButton('ТОП-спикеры')
     btn11 = types.KeyboardButton('Экспонентам')
+    btn6 = types.KeyboardButton('Деловая программа')
+
     btn12 = types.KeyboardButton('Контакты')
     btn13 = types.KeyboardButton('Ближайшие проекты')
     btn14 = types.KeyboardButton('Организаторы')
-    markup.add(btn1, btn2)
+
+    markup.add(btn0, btn1, btn2)
     markup.add(btn3)
-    markup.add(btn4, btn5, btn6, btn7)
-    markup.add(btn8)
-    markup.add(btn9, btn10, btn11, btn12, btn13, btn14)
+    markup.add(btn5, btn10, btn4)
+    markup.add(btn8, btn9)
+    markup.add(btn7, btn6, btn11)
+    markup.add(btn12, btn13, btn14)
 
     return markup
 

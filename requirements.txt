@@ -6,3 +6,4 @@ requests==2.28.2
 urllib3==1.26.14
 
 telebot~=0.0.5
+mysqlclient~=2.2.4
