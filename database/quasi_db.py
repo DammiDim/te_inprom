@@ -31,12 +31,20 @@ class MySQL:
             conn.commit()
 
     def get_all_users(self):
-        _sql = "SELECT * FROM users;"
+        _sql = "SELECT * FROM users WHERE role = ?"
+        _data = (0,)
         with self.connection as conn:
             cursor = conn.cursor()
-            cursor.execute(_sql)
-
+            cursor.execute(_sql, _data)
             return cursor.fetchall()
+
+    def get_all_users_ids(self):
+        _users_data = self.get_all_users()
+        _users_list = []
+        for i in _users_data:
+            _users_list.append(i[0])
+
+        return _users_list
 
     def get_all_admins(self):
         _sql = "SELECT * FROM users WHERE role = ?"
@@ -44,8 +52,15 @@ class MySQL:
         with self.connection as conn:
             cursor = conn.cursor()
             cursor.execute(_sql, _data)
-
             return cursor.fetchall()
+
+    def get_all_admins_ids(self):
+        _admins_data = self.get_all_admins()
+        _admins_list = []
+        for i in _admins_data:
+            _admins_list.append(i[0])
+
+        return _admins_list
 
     def availability_user(self, telegram_id):
         _sql = "SELECT telegram_id FROM users WHERE telegram_id=?"
@@ -58,6 +73,3 @@ class MySQL:
             if not data:
                 return False
             return True
-
-    def __del__(self):
-        self.connection.close()

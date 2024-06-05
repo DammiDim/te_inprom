@@ -1,21 +1,33 @@
 from telebot import types
 
 from data.loader import bot
+from database import quasi_db
 from keyboard.inline.inline_button import register_btn, exhibitors_btn, dl_app_btn, address_btn, \
     vip_participation_btn, upcoming_projects_btn
 from keyboard.replay.reply_button import welcome_btn
 from data.texts import *
 
 
+####################################################################################################
+############################################# КОМАНДЫ ##############################################
+
 @bot.message_handler(is_admin=False, commands=['start'])
 def welcome(message):
-    ID = message.chat.id
-    first_name = message.from_user.first_name
+    bot.clear_reply_handlers(message)
+
+    telegram_id = message.chat.id
+    username = message.from_user.username
+    role = 0
     markup = welcome_btn()
-    message_text = f'Привет {first_name}!\nВаш user ID: {ID}\n'
 
-    bot.send_message(message.chat.id, message_text, reply_markup=markup)
+    my_sql = quasi_db.MySQL('inprom_users.db')
+    my_sql.add_user(telegram_id, username, role)
 
+    bot.send_message(message.chat.id, t_welcome, reply_markup=markup)
+
+
+####################################################################################################
+###################################### ОБРАБОТЧИК СООБЩЕНИЙ ########################################
 
 @bot.callback_query_handler(func=lambda call: call.data == 'to_back_exhibition')
 @bot.message_handler(func=lambda message: message.text == 'О выставке')
@@ -64,6 +76,17 @@ def to_book(message):
     bot.send_message(message.chat.id, t_tobook)
 
 
+@bot.message_handler(func=lambda message: message.text == 'Время работы выставки')
+def times(message):
+    bot.send_message(message.chat.id, t_times, parse_mode='html')
+
+
+@bot.message_handler(func=lambda message: message.text == 'Как добраться')
+def address(message):
+    markup = address_btn()
+    bot.send_message(message.chat.id, t_address, reply_markup=markup)
+
+
 @bot.message_handler(func=lambda message: message.text == 'Схема выставки')
 def scheme(message):
     markup = types.InlineKeyboardMarkup(row_width=1)
@@ -74,28 +97,6 @@ def scheme(message):
     )
 
     bot.send_message(message.chat.id, t_scheme, reply_markup=markup)
-
-
-@bot.message_handler(func=lambda message: message.text == 'Время работы выставки')
-def times(message):
-    bot.send_message(message.chat.id, t_times, parse_mode='html')
-
-
-@bot.message_handler(func=lambda message: message.text == 'Деловая программа')
-def business_program(message):
-    bot.send_message(message.chat.id, 'It will be later')
-
-
-@bot.message_handler(func=lambda message: message.text == 'ТОП-спикеры')
-def spikes(message):
-    markup = types.InlineKeyboardMarkup(row_width=1)
-
-    markup.add(
-        types.InlineKeyboardButton(text='Актуальный список будет позже, как пример',
-                                   web_app=types.WebAppInfo('https://expo.innoprom.com/speakers/')),
-    )
-
-    bot.send_message(message.chat.id, 'ТОП-спикеры', reply_markup=markup)
 
 
 @bot.message_handler(func=lambda message: message.text == 'Назначить встречу на выставке')
@@ -110,11 +111,21 @@ def representative(message):
     bot.send_message(message.chat.id, t_representative, reply_markup=markup)
 
 
-@bot.message_handler(func=lambda message: message.text == 'Как добраться')
-def address(message):
-    markup = address_btn()
-    bot.send_message(message.chat.id, t_address, reply_markup=markup)
-    bot.send_location(message.chat.id, 56.768099, 60.759315)
+@bot.message_handler(func=lambda message: message.text == 'ТОП-спикеры')
+def spikes(message):
+    markup = types.InlineKeyboardMarkup(row_width=1)
+
+    markup.add(
+        types.InlineKeyboardButton(text='Актуальный список будет позже, как пример',
+                                   web_app=types.WebAppInfo('https://expo.innoprom.com/speakers/')),
+    )
+
+    bot.send_message(message.chat.id, 'ТОП-спикеры', reply_markup=markup)
+
+
+@bot.message_handler(func=lambda message: message.text == 'Деловая программа')
+def business_program(message):
+    bot.send_message(message.chat.id, 'It will be later')
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'to_back_exhibitors')
@@ -151,6 +162,7 @@ def upcoming_projects(message):
         bot.edit_message_text(chat_id=chat_id, message_id=message_id,
                               text=t_upcoming_proj,
                               reply_markup=markup)
+
 
 @bot.message_handler(func=lambda message: message.text == 'Организаторы')
 def org(message):

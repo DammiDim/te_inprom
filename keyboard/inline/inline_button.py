@@ -40,22 +40,6 @@ def register_btn():
     return markup
 
 
-# def register_btn():
-#     markup = types.InlineKeyboardMarkup(row_width=1)
-#     markup.add(
-#         types.InlineKeyboardButton('Посетитель',
-#                                    web_app=types.WebAppInfo('https://expo.innoprom.com/register/visitor/')),
-#         types.InlineKeyboardButton('VIP-участие',
-#                                    web_app=types.WebAppInfo('https://expo.innoprom.com/register/visitor/')),
-#         types.InlineKeyboardButton('Делегат',
-#                                    web_app=types.WebAppInfo('https://expo.innoprom.com/register/delegate/')),
-#         types.InlineKeyboardButton('СМИ',
-#                                    web_app=types.WebAppInfo('https://expo.innoprom.com/register/press/')),
-#     )
-#
-#     return markup
-
-
 def exhibitors_btn():
     markup = types.InlineKeyboardMarkup(row_width=1)
     markup.add(
