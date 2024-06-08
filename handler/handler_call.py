@@ -6,98 +6,94 @@ from data.texts import *
 
 @bot.callback_query_handler(func=lambda call: 'exhibitors' in call.data)
 def exhibitors_submenu(call):
-    chat_id = call.message.chat.id
-    message_id = call.message.message_id
+    _chat_id = call.message.chat.id
+    _message_id = call.message.message_id
 
-    markup = types.InlineKeyboardMarkup(row_width=1).add(
+    _markup = types.InlineKeyboardMarkup(row_width=1).add(
         types.InlineKeyboardButton('Назад', callback_data='to_back_exhibitors'), )
 
+    _text = ''
+
     if call.data == 'exhibitors_1':
-        bot.edit_message_text(chat_id=chat_id, message_id=message_id,
-                              text=t_exhibitors_submenu_1,
-                              reply_markup=markup)
+        _text = t_exhibitors_submenu_1
 
     elif call.data == 'exhibitors_2':
-        bot.edit_message_text(chat_id=chat_id, message_id=message_id,
-                              text=t_exhibitors_submenu_2,
-                              reply_markup=markup)
+        _text = t_exhibitors_submenu_2
 
     elif call.data == 'exhibitors_3':
-        bot.edit_message_text(chat_id=chat_id, message_id=message_id,
-                              text=t_exhibitors_submenu_3,
-                              reply_markup=markup)
+        _text = t_exhibitors_submenu_3
 
     elif call.data == 'exhibitors_4':
-        bot.edit_message_text(chat_id=chat_id, message_id=message_id,
-                              text=t_exhibitors_submenu_4,
-                              reply_markup=markup)
+        _text = t_exhibitors_submenu_4
+
+    elif call.data == 'exhibitors_5':
+        _text = t_exhibitors_submenu_5
+
+    elif call.data == 'exhibitors_6':
+        _text = t_exhibitors_submenu_6
+
+    bot.edit_message_text(chat_id=_chat_id, message_id=_message_id,
+                          text=_text, reply_markup=_markup)
 
 
 @bot.callback_query_handler(func=lambda call: 'register' in call.data)
 def register_submenu(call):
-    chat_id = call.message.chat.id
-    message_id = call.message.message_id
+    _chat_id = call.message.chat.id
+    _message_id = call.message.message_id
 
-    markup = types.InlineKeyboardMarkup(row_width=1)
-    markup.add(types.InlineKeyboardButton('Назад', callback_data='to_back_register'), )
+    _markup = types.InlineKeyboardMarkup(row_width=1)
+    _back_btn = types.InlineKeyboardButton('Назад', callback_data='to_back_register')
+    _more_btn = types.InlineKeyboardButton('Подробнее,', callback_data='none')
+    _text = ''
 
     if call.data == 'register_vip':
-        markup.add(types.InlineKeyboardButton('Посетить сайт',
-                                              url=r'https://expo.innoprom.com/register/vip/'), )
-        bot.edit_message_text(chat_id=chat_id, message_id=message_id,
-                              text=t_register_submenu_vip,
-                              reply_markup=markup)
+        _more_btn = types.InlineKeyboardButton('Подробнее', url=r'https://expo.innoprom.com/register/vip/')
+        _text = t_register_submenu_vip
 
     elif call.data == 'register_visitor':
-        markup.add(types.InlineKeyboardButton('Посетить сайт',
-                                              url=r'https://expo.innoprom.com/register/visitor/'), )
-        bot.edit_message_text(chat_id=chat_id, message_id=message_id,
-                              text=t_register_submenu_visitor,
-                              reply_markup=markup)
+        _more_btn = types.InlineKeyboardButton('Подробнее', url=r'https://expo.innoprom.com/register/visitor/')
+        _text = t_register_submenu_visitor
 
     elif call.data == 'register_delegate':
-        markup.add(types.InlineKeyboardButton('Посетить сайт',
-                                              url=r'https://expo.innoprom.com/register/delegate/'), )
-        bot.edit_message_text(chat_id=chat_id, message_id=message_id,
-                              text=t_register_submenu_delegate,
-                              reply_markup=markup)
+        _more_btn = types.InlineKeyboardButton('Подробнее', url=r'https://expo.innoprom.com/register/delegate/')
+        _text = t_register_submenu_delegate
 
     elif call.data == 'register_media':
-        markup.add(types.InlineKeyboardButton('Посетить сайт',
-                                              url=r'https://expo.innoprom.com/register/press/'), )
-        bot.edit_message_text(chat_id=chat_id, message_id=message_id,
-                              text=t_register_submenu_media,
-                              reply_markup=markup)
+        _more_btn = types.InlineKeyboardButton('Подробнее', url=r'https://expo.innoprom.com/register/press/')
+        _text = t_register_submenu_media
+
+    _markup.add(_more_btn, _back_btn)
+    bot.edit_message_text(chat_id=_chat_id, message_id=_message_id,
+                          text=_text,
+                          reply_markup=_markup)
 
 
 @bot.callback_query_handler(func=lambda call: 'upcoming_proj' in call.data)
 def upcoming_proj_submenu(call):
-    chat_id = call.message.chat.id
-    message_id = call.message.message_id
+    _chat_id = call.message.chat.id
+    _message_id = call.message.message_id
 
-    markup = types.InlineKeyboardMarkup(row_width=1).add(
-        types.InlineKeyboardButton('Назад', callback_data='to_back_upcoming_proj'), )
+    _markup = types.InlineKeyboardMarkup(row_width=1)
+    _back_btn = types.InlineKeyboardButton('Назад', callback_data='to_back_upcoming_proj')
+    _more_btn = types.InlineKeyboardButton('Подробнее,', callback_data='none')
+    _text = ''
 
     if call.data == 'upcoming_proj_bioprom':
-        markup.add(types.InlineKeyboardButton('Посетить сайт',
-                                              url=r'https://biopromforum.ru/'), )
-        bot.edit_message_text(chat_id=chat_id, message_id=message_id,
-                              text=t_upcoming_proj_submenu_bioprom,
-                              reply_markup=markup)
+        _more_btn = types.InlineKeyboardButton('Подробнее', url=r'https://biopromforum.ru/')
+        _text = t_upcoming_proj_submenu_bioprom
 
     elif call.data == 'upcoming_proj_innoprom_sa':
-        markup.add(types.InlineKeyboardButton('Посетить сайт',
-                                              url=r'https://ksabm.com/'), )
-        bot.edit_message_text(chat_id=chat_id, message_id=message_id,
-                              text=t_upcoming_proj_submenu_innoprom_sa,
-                              reply_markup=markup)
+        _more_btn = types.InlineKeyboardButton('Подробнее', url=r'https://ksabm.com/')
+        _text = t_upcoming_proj_submenu_innoprom_sa
 
     elif call.data == 'upcoming_proj_innoprom_ca':
-        markup.add(types.InlineKeyboardButton('Скоро будет',
-                                              callback_data='a'), )
-        bot.edit_message_text(chat_id=chat_id, message_id=message_id,
-                              text=t_upcoming_proj_submenu_innoprom_ca,
-                              reply_markup=markup)
+        _more_btn = types.InlineKeyboardButton('Подробнее', url=r'https://tashkent.bigindustrialweek.com/ru/')
+        _text = t_upcoming_proj_submenu_innoprom_ca
+
+    _markup.add(_more_btn, _back_btn)
+    bot.edit_message_text(chat_id=_chat_id, message_id=_message_id,
+                          text=_text,
+                          reply_markup=_markup)
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'tobook')

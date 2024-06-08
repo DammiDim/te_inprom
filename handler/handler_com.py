@@ -65,7 +65,7 @@ def register(message):
                               reply_markup=markup)
 
 
-@bot.message_handler(func=lambda message: message.text == 'Забронировать площадь на 2025 год')
+@bot.message_handler(func=lambda message: message.text == 'Ваше участие в 2025 году')
 def to_book(message):
     markup = types.InlineKeyboardMarkup(row_width=1)
 
@@ -117,7 +117,7 @@ def spikes(message):
 
     markup.add(
         types.InlineKeyboardButton(text='Актуальный список будет позже, как пример',
-                                   web_app=types.WebAppInfo('https://expo.innoprom.com/speakers/')),
+                                   url='https://expo.innoprom.com/speakers/'),
     )
 
     bot.send_message(message.chat.id, 'ТОП-спикеры', reply_markup=markup)
@@ -125,7 +125,13 @@ def spikes(message):
 
 @bot.message_handler(func=lambda message: message.text == 'Деловая программа')
 def business_program(message):
-    bot.send_message(message.chat.id, 'It will be later')
+    markup = types.InlineKeyboardMarkup(row_width=1)
+
+    markup.add(
+        types.InlineKeyboardButton(text='Деловая программа',
+                                   url='https://expo.innoprom.com/business-program/'),
+    )
+    bot.send_message(message.chat.id, 'Деловая программа доступна по кнопке ниже', reply_markup=markup)
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'to_back_exhibitors')

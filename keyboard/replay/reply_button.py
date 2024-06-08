@@ -8,7 +8,7 @@ def welcome_btn():
     btn1 = types.KeyboardButton('VIP участие')
     btn2 = types.KeyboardButton('Регистрация')
 
-    btn3 = types.KeyboardButton('Забронировать площадь на 2025 год')
+    btn3 = types.KeyboardButton('Ваше участие в 2025 году')
 
     btn5 = types.KeyboardButton('Время работы выставки')
     btn10 = types.KeyboardButton('Как добраться')
