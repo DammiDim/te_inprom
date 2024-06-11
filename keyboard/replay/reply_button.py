@@ -25,12 +25,14 @@ def welcome_btn():
     btn13 = types.KeyboardButton('Ближайшие проекты')
     btn14 = types.KeyboardButton('Организаторы')
 
+    btn15 = types.KeyboardButton('🔸 Задать вопрос 🔸')
+
     markup.add(btn0, btn1, btn2)
     markup.add(btn3)
-    markup.add(btn5, btn10, btn4)
+    markup.add(btn5, btn10, )  # btn4
     markup.add(btn8, btn9)
-    markup.add(btn7, btn6, btn11)
+    markup.add(btn6, btn11)  # btn7
     markup.add(btn12, btn13, btn14)
+    markup.add(btn15)
 
     return markup
-

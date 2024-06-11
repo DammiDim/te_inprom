@@ -22,6 +22,16 @@ class MySQL:
             cursor.executemany(_sql, _data)
             conn.commit()
 
+    def update_role(self, telegram_id, new_role):
+        _sql = 'UPDATE users SET role = ? WHERE telegram_id = ?'
+        _data = [
+            (new_role, telegram_id),
+        ]
+        with self.connection as conn:
+            cursor = conn.cursor()
+            cursor.executemany(_sql, _data)
+            conn.commit()
+
     def del_user(self, telegram_id):
         _sql = f"DELETE FROM users WHERE telegram_id = ?"
         _data = (telegram_id,)

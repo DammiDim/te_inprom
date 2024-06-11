@@ -13,7 +13,6 @@ _msg_start_id = 0
 @bot.message_handler(is_admin=True, commands=['start'])
 def welcome(message):
     bot.clear_reply_handlers(message)
-
     markup = welcome_btn()
 
     btn1 = types.KeyboardButton('❗ Отправить сообщение всем ❗')

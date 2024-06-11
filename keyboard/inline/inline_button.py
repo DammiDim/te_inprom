@@ -40,10 +40,10 @@ def upcoming_projects_btn():
     markup = types.InlineKeyboardMarkup(row_width=1)
     markup.add(
         types.InlineKeyboardButton('БИОПРОМ (БИОТЕХМЕД и INNOFOOD) ', callback_data='upcoming_proj_bioprom'),
-        types.InlineKeyboardButton('ИННОПРОМ. Саудовская Аравия', callback_data='upcoming_proj_innoprom_sa'),
         types.InlineKeyboardButton('ИННОПРОМ. Центральная Азия', callback_data='upcoming_proj_innoprom_ca'),
     )
 
+    # types.InlineKeyboardButton('ИННОПРОМ. Саудовская Аравия', callback_data='upcoming_proj_innoprom_sa'),
     return markup
 
 
@@ -64,10 +64,10 @@ def address_btn():
     markup.add(
         types.InlineKeyboardButton(
             text='Открыть карту',
-            url=r'https://yandex.ru/maps/54/yekaterinburg/?from=mapframe&ll=60.758613%2C56'
-                r'.767139&mode=usermaps&source=mapframe&um=constructor'
-                r'%3Ad5c2c639720f2a59d9f1cc7f456f74e5600c40aba593c20a16e5d0b4f0e12859'
-                r'&utm_source=mapframe&z=14'),
+            web_app=types.WebAppInfo(r'https://yandex.ru/maps/54/yekaterinburg/?from=mapframe&ll=60.758613%2C56'
+                                     r'.767139&mode=usermaps&source=mapframe&um=constructor'
+                                     r'%3Ad5c2c639720f2a59d9f1cc7f456f74e5600c40aba593c20a16e5d0b4f0e12859'
+                                     r'&utm_source=mapframe&z=14'), )
     )
 
     return markup

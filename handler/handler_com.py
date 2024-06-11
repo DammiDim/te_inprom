@@ -6,6 +6,7 @@ from keyboard.inline.inline_button import register_btn, exhibitors_btn, dl_app_b
     vip_participation_btn, upcoming_projects_btn
 from keyboard.replay.reply_button import welcome_btn
 from data.texts import *
+# from utils.misc_func import update_reply_keyboard
 
 
 ####################################################################################################
@@ -70,10 +71,10 @@ def to_book(message):
     markup = types.InlineKeyboardMarkup(row_width=1)
 
     markup.add(
-        types.InlineKeyboardButton(text='Отправить запрос mailto:savin@innoprom.com', url=r'mailto:savin@innoprom.com'),
+        types.InlineKeyboardButton(text='Отправить запрос', callback_data='a'),
     )
-    # todo убрал кнопки, не понимаю как запустить действие по ссылке.....
-    bot.send_message(message.chat.id, t_tobook)
+
+    bot.send_message(message.chat.id, t_tobook, reply_markup=markup)
 
 
 @bot.message_handler(func=lambda message: message.text == 'Время работы выставки')
@@ -140,14 +141,14 @@ def exhibitors(message):
     markup = exhibitors_btn()
 
     if type(message) is types.Message:
-        bot.send_message(message.chat.id, text=t_exhibitors, reply_markup=markup)
+        bot.send_message(message.chat.id, text=t_exhibitors, parse_mode='html', reply_markup=markup,disable_web_page_preview = True)
 
     if type(message) is types.CallbackQuery:
         chat_id = message.message.chat.id
         message_id = message.message.message_id
         bot.edit_message_text(chat_id=chat_id, message_id=message_id,
                               text=t_exhibitors,
-                              reply_markup=markup)
+                              reply_markup=markup,  parse_mode='html',disable_web_page_preview = True)
 
 
 @bot.message_handler(func=lambda message: message.text == 'Контакты')
@@ -172,4 +173,16 @@ def upcoming_projects(message):
 
 @bot.message_handler(func=lambda message: message.text == 'Организаторы')
 def org(message):
-    bot.send_message(message.chat.id, t_org, disable_web_page_preview=True, parse_mode='html')
+    markup1 = types.InlineKeyboardMarkup().add(
+        types.InlineKeyboardButton('Подробнее', url=r'https://minpromtorg.gov.ru/'),
+    )
+    markup2 = types.InlineKeyboardMarkup().add(
+        types.InlineKeyboardButton('Подробнее', url=r'https://midural.ru/'),
+    )
+    markup3 = types.InlineKeyboardMarkup().add(
+        types.InlineKeyboardButton('Подробнее', url=r'https://business-event.com/'),
+    )
+
+    bot.send_message(message.chat.id, t_org_1, disable_web_page_preview=True, parse_mode='html', reply_markup=markup1)
+    bot.send_message(message.chat.id, t_org_2, disable_web_page_preview=True, parse_mode='html', reply_markup=markup2)
+    bot.send_message(message.chat.id, t_org_3, disable_web_page_preview=True, parse_mode='html', reply_markup=markup3)
