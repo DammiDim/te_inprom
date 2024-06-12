@@ -213,5 +213,13 @@ def organizers(message):
     _chat_id = message.chat.id
     _photo = open('img/img_organizers.png', 'rb')
     _markup = organizers_btn()
+    _markup_be = types.InlineKeyboardMarkup(row_width=1)
+    _markup_be.add(
+        types.InlineKeyboardButton(
+            text='Business Event',
+            url=r'https://business-event.com/ '), )
 
-    bot.send_photo(_chat_id, photo=_photo, caption=t_organizers, reply_markup=_markup)
+    bot.send_photo(_chat_id, photo=_photo, caption='<i>Информация об организаторах</i>',
+                   reply_markup=_markup, parse_mode='html')
+    bot.send_message(_chat_id, t_organizers, reply_markup=_markup_be)
+

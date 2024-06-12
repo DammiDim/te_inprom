@@ -78,10 +78,6 @@ def organizers_btn():
     _markup = types.InlineKeyboardMarkup(row_width=1)
     _markup.add(
         types.InlineKeyboardButton(
-            text='Business Event',
-            url=r'https://business-event.com/ '),
-
-        types.InlineKeyboardButton(
             text='Министерство промышленности и торговли РФ',
             url=r'https://minpromtorg.gov.ru/'),
 
