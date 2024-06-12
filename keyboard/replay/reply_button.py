@@ -26,7 +26,7 @@ def welcome_btn():
     btn14 = types.KeyboardButton('Организаторы')
 
     btn15 = types.KeyboardButton('🔸 Задать вопрос 🔸')
-
+    # todo temporarily btn4/7
     markup.add(btn0, btn1, btn2)
     markup.add(btn3)
     markup.add(btn5, btn10, )  # btn4

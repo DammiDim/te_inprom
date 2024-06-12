@@ -11,7 +11,7 @@ bot.add_custom_filter(IsAdmin())
 
 if __name__ == '__main__':
     name_later()
-    bot.polling(none_stop=True)
+    bot.polling(none_stop=True, interval=1)
 
 # Бот
 # 1. Перерисовку клавиатуры (декоратор)

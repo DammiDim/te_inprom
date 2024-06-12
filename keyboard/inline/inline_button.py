@@ -2,29 +2,29 @@ from telebot import types
 
 
 def vip_participation_btn():
-    markup = types.InlineKeyboardMarkup(row_width=1)
-    markup.add(
+    _markup = types.InlineKeyboardMarkup(row_width=1)
+    _markup.add(
         types.InlineKeyboardButton('Стать VIP-участником ', url='https://expo.innoprom.com/for-participants/vip')
     )
 
-    return markup
+    return _markup
 
 
 def register_btn():
-    markup = types.InlineKeyboardMarkup(row_width=1)
-    markup.add(
+    _markup = types.InlineKeyboardMarkup(row_width=1)
+    _markup.add(
         types.InlineKeyboardButton('Посетитель', callback_data='register_visitor'),
         types.InlineKeyboardButton('VIP-участие', callback_data='register_vip'),
         types.InlineKeyboardButton('Делегат', callback_data='register_delegate'),
         types.InlineKeyboardButton('СМИ', callback_data='register_media'),
     )
 
-    return markup
+    return _markup
 
 
 def exhibitors_btn():
-    markup = types.InlineKeyboardMarkup(row_width=1)
-    markup.add(
+    _markup = types.InlineKeyboardMarkup(row_width=1)
+    _markup.add(
         types.InlineKeyboardButton('Фотосопровождение', callback_data='exhibitors_1'),
         types.InlineKeyboardButton('Рекламные и PR опции', callback_data='exhibitors_2'),
         types.InlineKeyboardButton('Аренда переговорной комнаты', callback_data='exhibitors_3'),
@@ -33,41 +33,70 @@ def exhibitors_btn():
         types.InlineKeyboardButton('INNOPROM Cafeteria', callback_data='exhibitors_6'),
     )
 
-    return markup
+    return _markup
 
 
 def upcoming_projects_btn():
-    markup = types.InlineKeyboardMarkup(row_width=1)
-    markup.add(
+    _markup = types.InlineKeyboardMarkup(row_width=1)
+    _markup.add(
         types.InlineKeyboardButton('БИОПРОМ (БИОТЕХМЕД и INNOFOOD) ', callback_data='upcoming_proj_bioprom'),
         types.InlineKeyboardButton('ИННОПРОМ. Центральная Азия', callback_data='upcoming_proj_innoprom_ca'),
     )
-
+    # todo temporarily
     # types.InlineKeyboardButton('ИННОПРОМ. Саудовская Аравия', callback_data='upcoming_proj_innoprom_sa'),
-    return markup
+    return _markup
 
 
 def dl_app_btn():
-    markup = types.InlineKeyboardMarkup(row_width=1)
-
-    markup.add(
+    _markup = types.InlineKeyboardMarkup(row_width=1)
+    _markup.add(
         types.InlineKeyboardButton(text='Скачать мобильное приложение',
                                    url=r'https://expo.innoprom.com/mobile-application'),
     )
+    return _markup
 
-    return markup
+
+def spikes_btn():
+    _markup = types.InlineKeyboardMarkup(row_width=1)
+    _markup.add(
+        types.InlineKeyboardButton(text='Актуальный список будет позже, как пример',
+                                   url='https://expo.innoprom.com/speakers/'),
+    )
+    return _markup
+
+
+def business_program_btn():
+    _markup = types.InlineKeyboardMarkup(row_width=1)
+    _markup.add(
+        types.InlineKeyboardButton(text='Деловая программа',
+                                   url='https://expo.innoprom.com/business-program/'),
+    )
+    return _markup
+
+
+def organizers_btn():
+    _markup = types.InlineKeyboardMarkup(row_width=1)
+    _markup.add(
+        types.InlineKeyboardButton(
+            text='Business Event',
+            url=r'https://business-event.com/ '),
+
+        types.InlineKeyboardButton(
+            text='Министерство промышленности и торговли РФ',
+            url=r'https://minpromtorg.gov.ru/'),
+
+        types.InlineKeyboardButton(
+            text='Правительство Свердловской области',
+            url=r'https://midural.ru/'),
+    )
+    return _markup
 
 
 def address_btn():
-    markup = types.InlineKeyboardMarkup(row_width=1)
-
-    markup.add(
+    _markup = types.InlineKeyboardMarkup(row_width=1)
+    _markup.add(
         types.InlineKeyboardButton(
             text='Открыть карту',
-            web_app=types.WebAppInfo(r'https://yandex.ru/maps/54/yekaterinburg/?from=mapframe&ll=60.758613%2C56'
-                                     r'.767139&mode=usermaps&source=mapframe&um=constructor'
-                                     r'%3Ad5c2c639720f2a59d9f1cc7f456f74e5600c40aba593c20a16e5d0b4f0e12859'
-                                     r'&utm_source=mapframe&z=14'), )
+            url=r'https://yandex.ru/maps/-/CDrWYZzc')
     )
-
-    return markup
+    return _markup

@@ -1,4 +1,5 @@
 from telebot import types
+from telebot.types import InputMediaPhoto
 
 from data.loader import bot
 from data.texts import *
@@ -8,6 +9,8 @@ from data.texts import *
 def exhibitors_submenu(call):
     _chat_id = call.message.chat.id
     _message_id = call.message.message_id
+
+    _photo = open('img/img_exhibitors.png', 'rb')
 
     _markup = types.InlineKeyboardMarkup(row_width=1).add(
         types.InlineKeyboardButton('Назад', callback_data='to_back_exhibitors'), )
@@ -32,14 +35,19 @@ def exhibitors_submenu(call):
     elif call.data == 'exhibitors_6':
         _text = t_exhibitors_submenu_6
 
-    bot.edit_message_text(chat_id=_chat_id, message_id=_message_id,
-                          text=_text, reply_markup=_markup)
+    _media = InputMediaPhoto(media=_photo, caption=_text, parse_mode='html')
+    bot.edit_message_media(media=_media,
+                           chat_id=_chat_id,
+                           message_id=_message_id,
+                           reply_markup=_markup)
 
 
 @bot.callback_query_handler(func=lambda call: 'register' in call.data)
 def register_submenu(call):
     _chat_id = call.message.chat.id
     _message_id = call.message.message_id
+
+    _photo = open('img/img_register.png', 'rb')
 
     _markup = types.InlineKeyboardMarkup(row_width=1)
     _back_btn = types.InlineKeyboardButton('Назад', callback_data='to_back_register')
@@ -63,15 +71,19 @@ def register_submenu(call):
         _text = t_register_submenu_media
 
     _markup.add(_more_btn, _back_btn)
-    bot.edit_message_text(chat_id=_chat_id, message_id=_message_id,
-                          text=_text,
-                          reply_markup=_markup)
+    _media = InputMediaPhoto(media=_photo, caption=_text, parse_mode='html')
+    bot.edit_message_media(media=_media,
+                           chat_id=_chat_id,
+                           message_id=_message_id,
+                           reply_markup=_markup)
 
 
 @bot.callback_query_handler(func=lambda call: 'upcoming_proj' in call.data)
 def upcoming_proj_submenu(call):
     _chat_id = call.message.chat.id
     _message_id = call.message.message_id
+
+    _photo = open('img/img_upcoming_projects.png', 'rb')
 
     _markup = types.InlineKeyboardMarkup(row_width=1)
     _back_btn = types.InlineKeyboardButton('Назад', callback_data='to_back_upcoming_proj')
@@ -91,9 +103,11 @@ def upcoming_proj_submenu(call):
         _text = t_upcoming_proj_submenu_innoprom_ca
 
     _markup.add(_more_btn, _back_btn)
-    bot.edit_message_text(chat_id=_chat_id, message_id=_message_id,
-                          text=_text,
-                          reply_markup=_markup)
+    _media = InputMediaPhoto(media=_photo, caption=_text, parse_mode='html')
+    bot.edit_message_media(media=_media,
+                           chat_id=_chat_id,
+                           message_id=_message_id,
+                           reply_markup=_markup)
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'tobook')
