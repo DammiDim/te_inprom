@@ -42,7 +42,7 @@ class MySQL:
 
     def get_all_users(self):
         _sql = "SELECT * FROM users WHERE role = ?"
-        _data = (0,)
+        _data = (5,)
         with self.connection as conn:
             cursor = conn.cursor()
             cursor.execute(_sql, _data)
@@ -58,7 +58,7 @@ class MySQL:
 
     def get_all_admins(self):
         _sql = "SELECT * FROM users WHERE role = ?"
-        _data = (1,)
+        _data = (0,)
         with self.connection as conn:
             cursor = conn.cursor()
             cursor.execute(_sql, _data)

@@ -25,20 +25,23 @@ def welcome(message):
 @bot.message_handler(is_admin=True, func=lambda message: message.text == '❗ Отправить сообщение всем ❗')
 def message_everyone(message):
     global _msg_start_id
+
     _text = 'Отправьте сообщения для рассылки и нажмите "Готово"'
 
     if type(message) is types.Message:
         _msg_start_id = message.id
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        markup.add(
-            types.KeyboardButton(text='Главное меню'),
+        _markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        _markup.add(
+            types.KeyboardButton('Главное меню'),
             types.KeyboardButton('Готово'))
-        bot.send_message(message.chat.id, _text, reply_markup=markup)
+
+        bot.send_message(message.chat.id, _text, reply_markup=_markup)
 
     if type(message) is types.CallbackQuery:
         chat_id = message.message.chat.id
         message_id = message.message.message_id
         _msg_start_id = message_id-1
+
         bot.edit_message_text(chat_id=chat_id, message_id=message_id,
                               text=_text)
 
@@ -46,21 +49,18 @@ def message_everyone(message):
 @bot.message_handler(is_admin=True, func=lambda message: message.text == 'Готово')
 def message_everyone(message):
     global _msg_ids, _msg_start_id
-    _collect_ids = []
 
-    for i in range(_msg_start_id+2, message.id):
-        _collect_ids.append(i)
-    _msg_ids = _collect_ids
-
+    _msg_ids = [i for i in range(_msg_start_id+2, message.id)]
     _markup = types.InlineKeyboardMarkup(row_width=1)
     _text = ''
+
     if not _msg_ids:
         _markup.add(
             types.InlineKeyboardButton(text='Отправить сообщение 🟢', callback_data='back_to_message_everyone'),
-            types.InlineKeyboardButton(text='Главное меню 🔴', callback_data='back_to_menu'),
+            types.InlineKeyboardButton(text='Главное меню 🟡', callback_data='back_to_menu'),
         )
-        _text = 'Сообщения не могут быть отправлены, так как они отсутствуют.'
-
+        _text = ('Возникла проблема с отправкой ваших сообщений. Пожалуйста, '
+                 'проверьте, всё ли заполнено верно, и попробуйте ещё раз.')
     else:
         _markup.add(
             types.InlineKeyboardButton(text='Да, все верно 🟢', callback_data='dispatch'),
@@ -71,10 +71,12 @@ def message_everyone(message):
     bot.send_message(message.chat.id, _text, reply_markup=_markup)
 
 
+# todo для юзерОВ - админ, для админа - юзерЫ
 @bot.callback_query_handler(func=lambda call: call.data == 'dispatch')
 def exhibitors_submenu(call):
     global _msg_ids
 
+    # вытащить в параметры
     my_sql = quasi_db.MySQL('inprom_users.db')
     users = my_sql.get_all_users_ids()
 
@@ -87,17 +89,19 @@ def exhibitors_submenu(call):
     markup.add(
         types.InlineKeyboardButton(text='Главное меню', callback_data='back_to_menu'),
     )
-    bot.edit_message_text(chat_id=chat_id, message_id=message_id, text='Сообщение было отправлено ✅', reply_markup=markup)
+    bot.edit_message_text(chat_id=chat_id, message_id=message_id, text='Сообщение было отправлено ✅',
+                          reply_markup=markup)
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'back_to_menu')
 @bot.message_handler(is_admin=True, func=lambda message: message.text == 'Главное меню')
 def exhibitors_submenu(message):
-    chat_id = message.chat.id
-    message_id = message.id
     if type(message) is types.CallbackQuery:
         chat_id = message.message.chat.id
         message_id = message.message.message_id
+    else:
+        chat_id = message.chat.id
+        message_id = message.id
 
     markup = welcome_btn()
     markup.add(types.KeyboardButton('❗ Отправить сообщение всем ❗'))

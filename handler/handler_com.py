@@ -1,12 +1,14 @@
 from telebot import types
 from telebot.types import InputMediaPhoto
 
+from data.config import TECHNICAL_SUPPORT, USER_ROLE
 from data.loader import bot
 from database import quasi_db
-from keyboard.inline.inline_button import register_btn, exhibitors_btn, dl_app_btn, address_btn, \
-    vip_participation_btn, upcoming_projects_btn, spikes_btn, business_program_btn, organizers_btn
+from keyboard.inline.inline_button import *
 from keyboard.replay.reply_button import welcome_btn
 from data.texts import *
+
+
 # from utils.misc_func import update_reply_keyboard
 
 
@@ -18,15 +20,15 @@ from data.texts import *
 def welcome(message):
     bot.clear_reply_handlers(message)
 
-    telegram_id = message.chat.id
-    username = message.from_user.username
-    role = 0
-    markup = welcome_btn()
+    _telegram_id = message.chat.id
+    _username = message.from_user.username
+    _role = USER_ROLE
+    _markup = welcome_btn()
 
-    my_sql = quasi_db.MySQL('inprom_users.db')
-    my_sql.add_user(telegram_id, username, role)
+    _my_sql = quasi_db.MySQL('inprom_users.db')
+    _my_sql.add_user(_telegram_id, _username, _role)
 
-    bot.send_message(message.chat.id, t_welcome, reply_markup=markup)
+    bot.send_message(message.chat.id, t_welcome, reply_markup=_markup)
 
 
 ####################################################################################################
@@ -164,7 +166,7 @@ def exhibitors(message):
                        photo=_photo,
                        caption=t_exhibitors,
                        reply_markup=_markup,
-                       parse_mode='html',)
+                       parse_mode='html', )
 
     if type(message) is types.CallbackQuery:
         _chat_id = message.message.chat.id
@@ -223,3 +225,30 @@ def organizers(message):
                    reply_markup=_markup, parse_mode='html')
     bot.send_message(_chat_id, t_organizers, reply_markup=_markup_be)
 
+
+@bot.message_handler(commands=["help"])
+@bot.message_handler(func=lambda message: message.text == '🔸 Задать вопрос 🔸')
+def ask_question(message):
+    msg = bot.send_message(message.chat.id, 'Напишите свой вопрос боту. Скоро вам ответит команда техподдержки.')
+    bot.register_next_step_handler(msg, send_reply)
+
+
+# Функция, отправляющая вопрос от пользователя в чат поддержки
+def send_reply(message):
+    _chat_id = message.chat.id
+    _markup = welcome_btn()
+    bot.forward_message(TECHNICAL_SUPPORT, _chat_id, message.message_id)
+    bot.send_message(_chat_id, 'Сообщение было доставлено, ожидайте ответа.', reply_markup=_markup)
+
+
+@bot.message_handler(content_types='text')
+def handle_text(message):
+    # здесь если чат id равен id чата поддержки, то отправить сообщение пользователю который задал вопрос
+    if int(message.chat.id) == TECHNICAL_SUPPORT:
+        try:
+            help_user_id = message.reply_to_message.forward_from.id
+            bot.send_message(help_user_id,
+                             f'<b><i>Команда поддержки ответила на ваш вопрос.</i></b>\n\n{message.text}',
+                             parse_mode='html')
+        except Exception:
+            pass

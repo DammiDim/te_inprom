@@ -112,8 +112,9 @@ def upcoming_proj_submenu(call):
 
 @bot.callback_query_handler(func=lambda call: call.data == 'tobook')
 def tobook_submenu(call):
-    text = 'Тут должна случиться магия, но у нас кончилась волшебная пыльца *('
-    bot.answer_callback_query(call.id, text, show_alert=True)
+    # todo исправить текст
+    _text = 'Тут должна случиться магия, но у нас кончилась волшебная пыльца *('
+    bot.answer_callback_query(call.id, _text, show_alert=True)
 
 
 @bot.callback_query_handler(func=lambda call: call.data)
