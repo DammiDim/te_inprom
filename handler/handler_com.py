@@ -182,8 +182,13 @@ def exhibitors(message):
 def contacts(message):
     _chat_id = message.chat.id
     _photo = open('img/img_contacts.png', 'rb')
+    _markup = types.InlineKeyboardMarkup(row_width=1)
+    _markup.add(
+        types.InlineKeyboardButton(
+            text='Контакты',
+            url=r'https://expo.innoprom.com/contacts/team/'), )
 
-    bot.send_photo(_chat_id, photo=_photo, caption=t_contact, parse_mode='html')
+    bot.send_photo(_chat_id, photo=_photo, caption=t_contact, reply_markup=_markup, parse_mode='html')
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'to_back_upcoming_proj')
