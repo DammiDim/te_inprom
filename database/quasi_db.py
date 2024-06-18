@@ -46,6 +46,7 @@ class MySQL:
         with self.connection as conn:
             cursor = conn.cursor()
             cursor.execute(_sql, _data)
+
             return cursor.fetchall()
 
     def get_all_users_ids(self):
@@ -71,6 +72,14 @@ class MySQL:
             _admins_list.append(i[0])
 
         return _admins_list
+
+    def get_all_records(self):
+        _sql = "SELECT * FROM users"
+
+        with self.connection as conn:
+            cursor = conn.cursor()
+            cursor.execute(_sql)
+            return cursor.fetchall()
 
     def availability_user(self, telegram_id):
         _sql = "SELECT telegram_id FROM users WHERE telegram_id=?"

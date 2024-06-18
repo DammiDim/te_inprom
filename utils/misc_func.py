@@ -1,4 +1,4 @@
-from data.config import ADMINS, TECHNICAL_SUPPORT, ADMIN_ROLE
+from data.config import ADMIN_ID, TECHNICAL_SUPPORT, ADMIN_ROLE
 from data.loader import bot, mySql
 from telebot import types
 
@@ -7,7 +7,7 @@ from keyboard.replay.reply_button import welcome_btn
 
 # todo come up with a name
 def name_later():
-    _admin = ADMINS
+    _admin = ADMIN_ID
     _technical_suppopt = TECHNICAL_SUPPORT
 
     _bd_admins = mySql.get_all_admins_ids()

@@ -1,7 +1,7 @@
 from telebot import types
 from telebot.types import InputMediaPhoto
 
-from data.config import TECHNICAL_SUPPORT, USER_ROLE
+from data.config import TECHNICAL_SUPPORT, USER_ROLE, ADMIN_USERNAME
 from data.loader import bot
 from database import quasi_db
 from keyboard.inline.inline_button import *
@@ -39,7 +39,7 @@ def ask_question(message):
 
     _markup = types.InlineKeyboardMarkup()
     _markup.add(
-        types.InlineKeyboardButton('Задать вопрос', url=fr't.me/innoprom2024'),)
+        types.InlineKeyboardButton('Задать вопрос', url=fr't.me/{ADMIN_USERNAME}'),)
 
     _text = 'Наша команда готова ответить на любые ваши вопросы по будням с 9:00 до 18:00 по МСК'
 

@@ -1,6 +1,7 @@
 from telebot import types
+import pandas as pd
 
-from data.loader import bot
+from data.loader import bot, mySql
 from data.texts import t_welcome
 from database import quasi_db
 from keyboard.replay.reply_button import welcome_btn
@@ -15,8 +16,10 @@ def welcome(message):
     bot.clear_reply_handlers(message)
     markup = welcome_btn()
 
-    btn1 = types.KeyboardButton('❗ Отправить сообщение всем ❗')
-    markup.add(btn1)
+    markup.add(
+        types.KeyboardButton('❗ Отправить сообщение всем ❗'),
+        types.KeyboardButton('❗ Выгрузить базу ❗'),
+    )
 
     bot.send_message(message.chat.id, t_welcome, reply_markup=markup)
 
@@ -40,7 +43,7 @@ def message_everyone(message):
     if type(message) is types.CallbackQuery:
         chat_id = message.message.chat.id
         message_id = message.message.message_id
-        _msg_start_id = message_id-1
+        _msg_start_id = message_id - 1
 
         bot.edit_message_text(chat_id=chat_id, message_id=message_id,
                               text=_text)
@@ -50,7 +53,7 @@ def message_everyone(message):
 def message_everyone(message):
     global _msg_ids, _msg_start_id
 
-    _msg_ids = [i for i in range(_msg_start_id+2, message.id)]
+    _msg_ids = [i for i in range(_msg_start_id + 2, message.id)]
     _markup = types.InlineKeyboardMarkup(row_width=1)
     _text = ''
 
@@ -102,11 +105,23 @@ def exhibitors_submenu(message):
         message_id = message.id
 
     markup = welcome_btn()
-    markup.add(types.KeyboardButton('❗ Отправить сообщение всем ❗'))
+    markup.add(
+        types.KeyboardButton('❗ Отправить сообщение всем ❗'),
+        types.KeyboardButton('❗ Выгрузить базу ❗'),
+    )
 
     bot.delete_message(chat_id, message_id)
     bot.send_message(chat_id, 'Вы вернулись в меню', reply_markup=markup)
 
     if type(message) is types.CallbackQuery:
         bot.answer_callback_query(message.id, text="")
-    
+
+
+@bot.message_handler(is_admin=True, func=lambda message: message.text == '❗ Выгрузить базу ❗')
+def cmd_export(message):
+    my_sql = quasi_db.MySQL('inprom_users.db')
+    data = my_sql.get_all_records()
+    df = pd.DataFrame(data)
+    df.to_excel('database/output.xlsx', index=False)
+    file=open('database/output.xlsx', 'rb')
+    bot.send_document(message.chat.id, document=file)
