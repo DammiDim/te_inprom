@@ -40,6 +40,7 @@ def exhibitors_submenu(call):
                            chat_id=_chat_id,
                            message_id=_message_id,
                            reply_markup=_markup)
+    bot.answer_callback_query(call.id, text="")
 
 
 @bot.callback_query_handler(func=lambda call: 'register' in call.data)
@@ -76,6 +77,7 @@ def register_submenu(call):
                            chat_id=_chat_id,
                            message_id=_message_id,
                            reply_markup=_markup)
+    bot.answer_callback_query(call.id, text="")
 
 
 @bot.callback_query_handler(func=lambda call: 'upcoming_proj' in call.data)
@@ -108,6 +110,7 @@ def upcoming_proj_submenu(call):
                            chat_id=_chat_id,
                            message_id=_message_id,
                            reply_markup=_markup)
+    bot.answer_callback_query(call.id, text="")
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'tobook')
@@ -115,6 +118,7 @@ def tobook_submenu(call):
     # todo исправить текст
     _text = 'Тут должна случиться магия, но у нас кончилась волшебная пыльца *('
     bot.answer_callback_query(call.id, _text, show_alert=True)
+    bot.answer_callback_query(call.id, text="")
 
 
 @bot.callback_query_handler(func=lambda call: call.data)

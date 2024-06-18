@@ -229,31 +229,3 @@ def organizers(message):
     bot.send_photo(_chat_id, photo=_photo, caption='<i>Информация об организаторах</i>',
                    reply_markup=_markup, parse_mode='html')
     bot.send_message(_chat_id, t_organizers, reply_markup=_markup_be)
-
-
-@bot.message_handler(commands=["help"])
-@bot.message_handler(func=lambda message: message.text == '🔸 Задать вопрос 🔸')
-def ask_question(message):
-    msg = bot.send_message(message.chat.id, 'Напишите свой вопрос боту. Скоро вам ответит команда техподдержки.')
-    bot.register_next_step_handler(msg, send_reply)
-
-
-# Функция, отправляющая вопрос от пользователя в чат поддержки
-def send_reply(message):
-    _chat_id = message.chat.id
-    _markup = welcome_btn()
-    bot.forward_message(TECHNICAL_SUPPORT, _chat_id, message.message_id)
-    bot.send_message(_chat_id, 'Сообщение было доставлено, ожидайте ответа.', reply_markup=_markup)
-
-
-@bot.message_handler(content_types='text')
-def handle_text(message):
-    # здесь если чат id равен id чата поддержки, то отправить сообщение пользователю который задал вопрос
-    if int(message.chat.id) == TECHNICAL_SUPPORT:
-        try:
-            help_user_id = message.reply_to_message.forward_from.id
-            bot.send_message(help_user_id,
-                             f'<b><i>Команда поддержки ответила на ваш вопрос.</i></b>\n\n{message.text}',
-                             parse_mode='html')
-        except Exception:
-            pass

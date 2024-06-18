@@ -71,12 +71,10 @@ def message_everyone(message):
     bot.send_message(message.chat.id, _text, reply_markup=_markup)
 
 
-# todo для юзерОВ - админ, для админа - юзерЫ
 @bot.callback_query_handler(func=lambda call: call.data == 'dispatch')
 def exhibitors_submenu(call):
     global _msg_ids
 
-    # вытащить в параметры
     my_sql = quasi_db.MySQL('inprom_users.db')
     users = my_sql.get_all_users_ids()
 
@@ -108,4 +106,7 @@ def exhibitors_submenu(message):
 
     bot.delete_message(chat_id, message_id)
     bot.send_message(chat_id, 'Вы вернулись в меню', reply_markup=markup)
+
+    if type(message) is types.CallbackQuery:
+        bot.answer_callback_query(message.id, text="")
     
