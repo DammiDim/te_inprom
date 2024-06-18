@@ -31,6 +31,23 @@ def welcome(message):
     bot.send_message(message.chat.id, t_welcome, reply_markup=_markup)
 
 
+@bot.message_handler(commands=["help"])
+@bot.message_handler(func=lambda message: message.text == '🔸 Задать вопрос 🔸')
+def ask_question(message):
+    global _msg_id
+    _msg_id = message.id
+
+    _markup = types.InlineKeyboardMarkup()
+    _markup.add(
+        types.InlineKeyboardButton('Задать вопрос', url=fr't.me/innoprom2024'),)
+
+    _text = 'Наша команда готова ответить на любые ваши вопросы по будням с 9:00 до 18:00 по МСК'
+
+    bot.send_message(
+        message.chat.id,
+        f'<b><i>{_text}</i></b>',
+        reply_markup=_markup, parse_mode='html')
+
 ####################################################################################################
 ###################################### ОБРАБОТЧИК СООБЩЕНИЙ ########################################
 

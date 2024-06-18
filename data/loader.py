@@ -13,6 +13,7 @@ bot.delete_my_commands(scope=None, language_code=None)
 bot.set_my_commands(
     commands=[
         telebot.types.BotCommand("start", "Запустить бота"),
+        telebot.types.BotCommand("help", "Техподдержка"),
     ]
 )
 
