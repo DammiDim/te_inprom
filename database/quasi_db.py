@@ -74,7 +74,7 @@ class MySQL:
         return _admins_list
 
     def get_all_records(self):
-        _sql = "SELECT * FROM users"
+        _sql = "SELECT telegram_id, username FROM users"
 
         with self.connection as conn:
             cursor = conn.cursor()
