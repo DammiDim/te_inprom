@@ -1,7 +1,7 @@
 from telebot import types
 from telebot.types import InputMediaPhoto
 
-from data.config import TECHNICAL_SUPPORT, USER_ROLE, ADMIN_USERNAME
+from data.config import TECHNICAL_SUPPORT, USER_ROLE, ADMIN_USERNAME, USER_STATUS_UNLOCKED
 from data.loader import bot
 from database import quasi_db
 from keyboard.inline.inline_button import *
@@ -23,12 +23,17 @@ def welcome(message):
     _telegram_id = message.chat.id
     _username = message.from_user.username
     _role = USER_ROLE
+    _status = USER_STATUS_UNLOCKED
     _markup = welcome_btn()
 
     _my_sql = quasi_db.MySQL('inprom_users.db')
-    _my_sql.add_user(_telegram_id, _username, _role)
+    if _my_sql.get_user(_telegram_id):
+        _my_sql.update_status(_telegram_id, _status)
+    else:
+        _my_sql.add_user(_telegram_id, _username, _role, _status)
 
     bot.send_message(message.chat.id, t_welcome, reply_markup=_markup)
+    # bot.send_message(message.chat.id, message, reply_markup=_markup)
 
 
 @bot.message_handler(commands=["help"])

@@ -9,27 +9,46 @@ class MySQL:
             conn.cursor().execute("CREATE TABLE IF NOT EXISTS users ("
                                   "telegram_id INTEGER PRIMARY KEY,"
                                   "username VARCHAR(20),"
-                                  "role INTEGER);")
+                                  "role INTEGER,"
+                                  "status INTEGER);")
             conn.commit()
 
-    def add_user(self, telegram_id, username, role):
-        _sql = 'INSERT OR IGNORE INTO users (telegram_id, username, role) values(?, ?, ?)'
+    def add_user(self, telegram_id, username, role, status):
+        _sql = 'INSERT OR IGNORE INTO users (telegram_id, username, role, status) values(?, ?, ?, ?)'
         _data = [
-            (telegram_id, username, role),
+            (telegram_id, username, role, status),
         ]
         with self.connection as conn:
             cursor = conn.cursor()
             cursor.executemany(_sql, _data)
+            conn.commit()
+
+    def add_colum(self, colum):
+        _sql = f'ALTER TABLE users ADD COLUMN {colum} INTEGER DEFAULT 1'
+
+        with self.connection as conn:
+            cursor = conn.cursor()
+            cursor.execute(_sql)
             conn.commit()
 
     def update_role(self, telegram_id, new_role):
         _sql = 'UPDATE users SET role = ? WHERE telegram_id = ?'
         _data = [
-            (new_role, telegram_id),
+            new_role, telegram_id
         ]
         with self.connection as conn:
             cursor = conn.cursor()
-            cursor.executemany(_sql, _data)
+            cursor.execute(_sql, _data)
+            conn.commit()
+
+    def update_status(self, telegram_id, status):
+        _sql = 'UPDATE users SET status = ? WHERE telegram_id = ?'
+        _data = [
+            status, telegram_id
+        ]
+        with self.connection as conn:
+            cursor = conn.cursor()
+            cursor.execute(_sql, _data)
             conn.commit()
 
     def del_user(self, telegram_id):
@@ -39,6 +58,15 @@ class MySQL:
             cursor = conn.cursor()
             cursor.execute(_sql, _data)
             conn.commit()
+
+    def get_user(self, telegram_id):
+        _sql = "SELECT * FROM users WHERE telegram_id = ?"
+        _data = (telegram_id,)
+        with self.connection as conn:
+            cursor = conn.cursor()
+            cursor.execute(_sql, _data)
+
+            return cursor.fetchone()
 
     def get_all_users(self):
         _sql = "SELECT * FROM users WHERE role = ?"
