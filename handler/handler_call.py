@@ -113,12 +113,36 @@ def upcoming_proj_submenu(call):
     bot.answer_callback_query(call.id, text="")
 
 
-@bot.callback_query_handler(func=lambda call: call.data == 'tobook')
+@bot.callback_query_handler(func=lambda call: 'tobook' in call.data)
 def tobook_submenu(call):
-    # todo исправить текст
-    _text = 'Тут должна случиться магия, но у нас кончилась волшебная пыльца *('
-    bot.answer_callback_query(call.id, _text, show_alert=True)
+    _chat_id = call.message.chat.id
+    _message_id = call.message.message_id
+
+    _photo = open('img/img_to_book.png', 'rb')
+
+    _markup = types.InlineKeyboardMarkup(row_width=1)
+    _back_btn = types.InlineKeyboardButton('Назад', callback_data='to_back_participation')
+    _more_btn = types.InlineKeyboardButton('Подробнее,', callback_data='none')
+    _text = ''
+
+    if call.data == 'tobook_stand':
+        _more_btn = types.InlineKeyboardButton(text='Отправить запрос', url=r'https://tinyurl.com/2ssspycc')
+        _text = t_tobook_stand
+
+    if call.data == 'tobook_partnership':
+        _more_btn = types.InlineKeyboardButton(text='Оставить заявку', url=r'https://tinyurl.com/2n5724r9')
+        _text = t_tobook_partnership
+
+    _markup.add(_more_btn, _back_btn)
+    _media = InputMediaPhoto(media=_photo, caption=_text, parse_mode='html')
+    bot.edit_message_media(media=_media,
+                           chat_id=_chat_id,
+                           message_id=_message_id,
+                           reply_markup=_markup)
+
     bot.answer_callback_query(call.id, text="")
+
+
 
 
 @bot.callback_query_handler(func=lambda call: call.data)

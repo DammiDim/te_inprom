@@ -94,16 +94,30 @@ def register(message):
                                reply_markup=_markup)
 
 
+@bot.callback_query_handler(func=lambda call: call.data == 'to_back_participation')
 @bot.message_handler(func=lambda message: message.text == 'Ваше участие в 2025 году')
 def to_book(message):
-    _chat_id = message.chat.id
     _photo = open('img/img_to_book.png', 'rb')
     _markup = types.InlineKeyboardMarkup(row_width=1)
     _markup.add(
-        types.InlineKeyboardButton(text='Отправить запрос', url=r'https://tinyurl.com/2ssspycc'),
+        types.InlineKeyboardButton(text='Участие со стендом', callback_data='tobook_stand'),
+        types.InlineKeyboardButton(text='Спонсорство и партнерство', callback_data='tobook_partnership'),
     )
+    _text = 'Ваше участие в 2025 году'
 
-    bot.send_photo(_chat_id, photo=_photo, caption=t_tobook, reply_markup=_markup, parse_mode='html')
+    if type(message) is types.Message:
+        _chat_id = message.chat.id
+        bot.send_photo(_chat_id, photo=_photo, caption=_text, reply_markup=_markup,
+                       parse_mode='html')
+
+    if type(message) is types.CallbackQuery:
+        _chat_id = message.message.chat.id
+        _message_id = message.message.message_id
+        _media = InputMediaPhoto(media=_photo, caption=_text, parse_mode='html')
+        bot.edit_message_media(media=_media,
+                               chat_id=_chat_id,
+                               message_id=_message_id,
+                               reply_markup=_markup)
 
 
 @bot.message_handler(func=lambda message: message.text == 'Время работы выставки')

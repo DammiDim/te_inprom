@@ -18,6 +18,3 @@ bot.set_my_commands(
 )
 
 mySql = quasi_db.MySQL('inprom_users.db')
-
-
-# mySql.add_colum('status')
