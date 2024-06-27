@@ -103,7 +103,7 @@ def to_book(message):
         types.InlineKeyboardButton(text='Участие со стендом', callback_data='tobook_stand'),
         types.InlineKeyboardButton(text='Спонсорство и партнерство', callback_data='tobook_partnership'),
     )
-    _text = 'Ваше участие в 2025 году'
+    _text = ''
 
     if type(message) is types.Message:
         _chat_id = message.chat.id

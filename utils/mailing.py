@@ -13,7 +13,6 @@ def mailing_msg(current_chat_id, message_ids: list):
     _my_sql3 = quasi_db.MySQL('inprom_users.db')
     _chat_ids = _my_sql3.get_all_users_ids() + _my_sql3.get_all_admins_ids()
 
-    print(_chat_ids)
     for i in _chat_ids:
         try:
             _mail_bot.copy_messages(i, current_chat_id, message_ids)

@@ -33,7 +33,7 @@ def message_everyone(message):
 
     if type(message) is types.Message:
         _msg_start_id = message.id
-        _markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        _markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
         _markup.add(
             types.KeyboardButton('Главное меню'),
             types.KeyboardButton('Готово'))
@@ -52,7 +52,6 @@ def message_everyone(message):
 @bot.message_handler(is_admin=True, func=lambda message: message.text == 'Готово')
 def message_everyone(message):
     global _msg_ids, _msg_start_id
-
     _msg_ids = [i for i in range(_msg_start_id + 2, message.id)]
     _markup = types.InlineKeyboardMarkup(row_width=1)
     _text = ''
@@ -75,28 +74,30 @@ def message_everyone(message):
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'dispatch')
-def exhibitors_submenu(call):
+def dispatch_msg(call):
     global _msg_ids
+    _chat_id = call.message.chat.id
+    _message_id = call.message.message_id
 
-    my_sql = quasi_db.MySQL('inprom_users.db')
-    users = my_sql.get_all_users_ids()
-
-    chat_id = call.message.chat.id
-    message_id = call.message.message_id
-
-    mailing_msg(users, chat_id, _msg_ids)
-
-    markup = types.InlineKeyboardMarkup(row_width=1)
-    markup.add(
-        types.InlineKeyboardButton(text='Главное меню', callback_data='back_to_menu'),
+    _markup = welcome_btn()
+    _markup.add(
+        types.KeyboardButton('❗ Отправить сообщение всем ❗'),
+        types.KeyboardButton('❗ Выгрузить базу ❗'),
     )
-    bot.edit_message_text(chat_id=chat_id, message_id=message_id, text='Сообщение было отправлено ✅',
-                          reply_markup=markup)
+
+    mailing_msg(_chat_id, _msg_ids)
+    bot.register_next_step_handler(call.message, exhibitors_submenu)
+    bot.delete_message(_chat_id, _message_id)
+    bot.send_message(chat_id=_chat_id, text='Сообщение было отправлено ✅', reply_markup=_markup)
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'back_to_menu')
 @bot.message_handler(is_admin=True, func=lambda message: message.text == 'Главное меню')
 def exhibitors_submenu(message):
+    global _msg_ids, _msg_start_id
+    _msg_ids = []
+    _msg_start_id = 0
+
     if type(message) is types.CallbackQuery:
         chat_id = message.message.chat.id
         message_id = message.message.message_id
@@ -122,6 +123,6 @@ def cmd_export(message):
     my_sql = quasi_db.MySQL('inprom_users.db')
     data = my_sql.get_all_records()
     df = pd.DataFrame(data)
-    df.to_excel('database/output.xlsx', index=False)
-    file=open('database/output.xlsx', 'rb')
+    df.to_excel('database/output.xlsx', index=False, header=True)
+    file = open('database/output.xlsx', 'rb')
     bot.send_document(message.chat.id, document=file)
