@@ -1,5 +1,7 @@
 from telebot import types
 
+from data.config import TECHNICAL_SUPPORT_USERNAME
+
 
 def vip_participation_btn():
     _markup = types.InlineKeyboardMarkup(row_width=1)
@@ -95,4 +97,14 @@ def address_btn():
             text='Открыть карту',
             url=r'https://yandex.ru/maps/-/CDrWYZzc')
     )
+    return _markup
+
+
+def ask_btn():
+    _markup = types.InlineKeyboardMarkup()
+    _markup.add(
+        types.InlineKeyboardButton(
+            text='Задать вопрос',
+            url=fr't.me/{TECHNICAL_SUPPORT_USERNAME}'), )
+
     return _markup

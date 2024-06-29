@@ -44,9 +44,7 @@ def ask_question(message):
     global _msg_id
     _msg_id = message.id
 
-    _markup = types.InlineKeyboardMarkup()
-    _markup.add(
-        types.InlineKeyboardButton('Задать вопрос', url=fr't.me/{TECHNICAL_SUPPORT_USERNAME}'), )
+    _markup = ask_btn()
 
     _text = 'Наша команда готова ответить на любые ваши вопросы по будням с 9:00 до 18:00 по МСК'
 
@@ -221,7 +219,7 @@ def exhibitors(message):
 def contacts(message):
     _chat_id = message.chat.id
     _photo = open('img/img_contacts.png', 'rb')
-    _markup = types.InlineKeyboardMarkup(row_width=1)
+    _markup = ask_btn()
     _markup.add(
         types.InlineKeyboardButton(
             text='Контакты',
