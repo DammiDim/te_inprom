@@ -1,9 +1,8 @@
-from telebot import types
 from telebot.types import InputMediaPhoto
 
-from data.config import TECHNICAL_SUPPORT, USER_ROLE, ADMIN_USERNAME, USER_STATUS_UNLOCKED
+from data.config import USER_ROLE, USER_STATUS_UNLOCKED, DATABASE_NAME, TECHNICAL_SUPPORT_USERNAME
 from data.loader import bot
-from database import quasi_db
+from database.sql_db import SqlDB
 from keyboard.inline.inline_button import *
 from keyboard.replay.reply_button import welcome_btn
 from data.texts import *
@@ -26,14 +25,17 @@ def welcome(message):
     _status = USER_STATUS_UNLOCKED
     _markup = welcome_btn()
 
-    _my_sql = quasi_db.MySQL('inprom_users.db')
-    if _my_sql.get_user(_telegram_id):
-        _my_sql.update_status(_telegram_id, _status)
+    _sqlDB = SqlDB(f"{DATABASE_NAME}")
+    _is_user = _sqlDB.select("SELECT * FROM users WHERE telegram_id = ?",
+                             [_telegram_id])
+    if _is_user:
+        _sqlDB.iud("UPDATE users SET status = ? WHERE telegram_id = ?",
+                   (_status, _telegram_id))
     else:
-        _my_sql.add_user(_telegram_id, _username, _role, _status)
+        _sqlDB.iud("INSERT OR IGNORE INTO users (telegram_id, username, role, status) values(?, ?, ?, ?)",
+                   (_telegram_id, _username, _role, _status))
 
     bot.send_message(message.chat.id, t_welcome, reply_markup=_markup)
-    # bot.send_message(message.chat.id, message, reply_markup=_markup)
 
 
 @bot.message_handler(commands=["help"])
@@ -44,7 +46,7 @@ def ask_question(message):
 
     _markup = types.InlineKeyboardMarkup()
     _markup.add(
-        types.InlineKeyboardButton('Задать вопрос', url=fr't.me/{ADMIN_USERNAME}'),)
+        types.InlineKeyboardButton('Задать вопрос', url=fr't.me/{TECHNICAL_SUPPORT_USERNAME}'), )
 
     _text = 'Наша команда готова ответить на любые ваши вопросы по будням с 9:00 до 18:00 по МСК'
 
@@ -52,6 +54,7 @@ def ask_question(message):
         message.chat.id,
         f'<b><i>{_text}</i></b>',
         reply_markup=_markup, parse_mode='html')
+
 
 ####################################################################################################
 ###################################### ОБРАБОТЧИК СООБЩЕНИЙ ########################################

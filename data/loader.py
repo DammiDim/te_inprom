@@ -1,20 +1,18 @@
 import tracemalloc
-
-import telebot
+from telebot import types
+from telebot import TeleBot
 from data import config
-from database import quasi_db
 
 tracemalloc.start()
-bot = telebot.TeleBot(config.TOKEN)
+bot = TeleBot(config.TOKEN)
 
 
-bot.delete_my_commands(scope=None, language_code=None)
+def set_new_com():
+    bot.delete_my_commands(scope=None, language_code=None)
 
-bot.set_my_commands(
-    commands=[
-        telebot.types.BotCommand("start", "Запустить бота"),
-        telebot.types.BotCommand("help", "Техподдержка"),
-    ]
-)
-
-mySql = quasi_db.MySQL('inprom_users.db')
+    bot.set_my_commands(
+        commands=[
+            types.BotCommand("start", "Запустить бота"),
+            types.BotCommand("help", "Техподдержка"),
+        ]
+    )
