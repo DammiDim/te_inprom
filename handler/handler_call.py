@@ -44,7 +44,7 @@ def exhibitors_submenu(call):
 
 
 @bot.callback_query_handler(func=lambda call: 'register' in call.data)
-async def register_submenu(call):
+def register_submenu(call):
     _chat_id = call.message.chat.id
     _message_id = call.message.message_id
 
@@ -73,10 +73,10 @@ async def register_submenu(call):
 
     _markup.add(_more_btn, _back_btn)
     _media = InputMediaPhoto(media=_photo, caption=_text, parse_mode='html')
-    await bot.edit_message_media(media=_media,
-                                 chat_id=_chat_id,
-                                 message_id=_message_id,
-                                 reply_markup=_markup)
+    bot.edit_message_media(media=_media,
+                           chat_id=_chat_id,
+                           message_id=_message_id,
+                           reply_markup=_markup)
     bot.answer_callback_query(call.id, text="")
 
 
