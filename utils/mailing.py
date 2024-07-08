@@ -49,7 +49,7 @@ def mailing_msg(current_chat_id, limit):
                 _mail_bot.copy_messages(_chat_id, current_chat_id, _message_ids)
 
                 _msgs.remove(i)
-                sleep(0.05)
+                sleep(0.03)
 
             except ApiTelegramException as e:
                 if 'USER_IS_BLOCKED' in e.description:
