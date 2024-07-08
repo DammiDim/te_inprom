@@ -12,7 +12,7 @@ def welcome_btn():
 
     btn5 = types.KeyboardButton('Время работы выставки')
     btn10 = types.KeyboardButton('Как добраться')
-    btn4 = types.KeyboardButton('Схема выставки')
+    btn4 = types.KeyboardButton('Интерактивная карта выставки')
 
     btn8 = types.KeyboardButton('Назначить встречу на выставке')
     btn9 = types.KeyboardButton('Диалог с торгпредом')
@@ -26,10 +26,12 @@ def welcome_btn():
     btn14 = types.KeyboardButton('Организаторы')
 
     btn15 = types.KeyboardButton('🔸 Задать вопрос 🔸')
+
     # todo temporarily btn4/7
     markup.add(btn0, btn1, btn2)
     markup.add(btn3)
-    markup.add(btn5, btn10, )  # btn4
+    markup.add(btn5, btn10, )
+    markup.add(btn4)
     markup.add(btn8, btn9)
     markup.add(btn6, btn11)  # btn7
     markup.add(btn12, btn13, btn14)

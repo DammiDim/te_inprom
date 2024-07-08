@@ -46,7 +46,7 @@ def ask_question(message):
 
     _markup = ask_btn()
 
-    _text = 'Наша команда готова ответить на любые ваши вопросы ежедневно с 9:00 до 18:00 (Екатеринбург, GMT +05:00)'
+    _text = 'Наша команда готова ответить на любые ваши вопросы ежедневно с 8:00 до 18:00 (Екатеринбург, GMT +05:00)'
 
     bot.send_message(
         message.chat.id,
@@ -138,7 +138,7 @@ def address(message):
     bot.send_photo(_chat_id, photo=_photo, caption=t_address, reply_markup=_markup, parse_mode='html')
 
 
-@bot.message_handler(func=lambda message: message.text == 'Схема выставки')
+@bot.message_handler(func=lambda message: message.text == 'Интерактивная карта выставки')
 def scheme(message):
     _chat_id = message.chat.id
     _photo = open('img/img_scheme.png', 'rb')
@@ -146,9 +146,8 @@ def scheme(message):
     _markup.add(
         types.InlineKeyboardButton(
             text='Открыть схему выставки',
-            web_app=types.WebAppInfo(r'https://in.umap.world/reu')),
+            web_app=types.WebAppInfo(r'https://in.umap.world/innoprom')),
     )
-
     bot.send_photo(_chat_id, photo=_photo, caption=t_scheme, reply_markup=_markup, parse_mode='html')
 
 
