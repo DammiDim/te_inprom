@@ -9,7 +9,7 @@ from keyboard.replay.reply_button import welcome_btn
 from utils.mailing import start_mailing
 
 _msg_ids = []
-_msg_start_id = 0
+_check = 0
 
 
 @bot.message_handler(is_admin=True, commands=['start'])
@@ -32,7 +32,10 @@ def welcome(message):
         'Нет, отправить новые 🔴'],
     is_admin=True)
 def message_everyone(message):
-    global _msg_start_id
+    global _check, _msg_ids
+    _check = 1
+    _msg_ids = []
+
     chat_id = message.chat.id
     message_id = message.id
     _markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -42,16 +45,15 @@ def message_everyone(message):
 
     _text = '❗ <b><i>Отправьте сообщения для рассылки и нажмите "Готово"</i></b>'
 
-    _msg_start_id = message_id + 2
-
     bot.delete_message(chat_id, message_id)
     bot.send_message(chat_id, _text, reply_markup=_markup, parse_mode='html')
 
 
 @bot.message_handler(is_admin=True, func=lambda message: message.text == 'Готово 🟢')
 def message_everyone(message):
-    global _msg_ids, _msg_start_id
-    _msg_ids = [i for i in range(_msg_start_id, message.id)]
+    global _msg_ids, _check
+    _check = 0
+
     _markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
     _text = ''
 
@@ -95,10 +97,6 @@ def dispatch_msg(message):
 
 @bot.message_handler(is_admin=True, func=lambda message: message.text in ['Главное меню 🟡'])
 def back_mainmenu(message):
-    global _msg_ids, _msg_start_id
-    _msg_ids = []
-    _msg_start_id = 0
-
     chat_id = message.chat.id
     message_id = message.id
 
@@ -120,3 +118,13 @@ def cmd_export(message):
     _df.to_excel('database/output.xlsx', index=True, header=True)
     _file = open('database/output.xlsx', 'rb')
     bot.send_document(message.chat.id, document=_file)
+
+
+@bot.message_handler(is_admin=True, func=lambda message: message.text)
+def cmd_export(message):
+    global _msg_ids, _check
+    _chat_id = message.chat.id
+    _message_id = message.message_id
+
+    if _check == 1:
+        _msg_ids.append(_message_id)

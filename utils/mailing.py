@@ -1,8 +1,9 @@
-from data.loader import bot
 import json
 from datetime import datetime
 
+from telebot import TeleBot
 from telebot.apihelper import ApiTelegramException
+from data import config
 from time import sleep
 
 from data.config import USER_STATUS_LOCKED, DATABASE_NAME
@@ -31,6 +32,7 @@ def get_selection_msg(limit):
 
 
 def mailing_msg(current_chat_id, limit):
+    _mail_bot = TeleBot(config.TOKEN)
     _sqlDB = SqlDB(f"{DATABASE_NAME}")
     _msgs = get_selection_msg(limit)
 
@@ -44,7 +46,7 @@ def mailing_msg(current_chat_id, limit):
 
                 _sqlDB.iud("UPDATE msg_queue SET status = ? WHERE date = ?",
                            (1, _date))
-                bot.copy_messages(_chat_id, current_chat_id, _message_ids)
+                _mail_bot.copy_messages(_chat_id, current_chat_id, _message_ids)
 
                 _msgs.remove(i)
                 sleep(0.03)
