@@ -39,6 +39,7 @@ def message_everyone(message):
     _markup.add(
         types.KeyboardButton('Главное меню 🟡'),
         types.KeyboardButton('Готово 🟢'))
+
     _text = '❗ <b><i>Отправьте сообщения для рассылки и нажмите "Готово"</i></b>'
 
     _msg_start_id = message_id + 2
@@ -81,11 +82,15 @@ def dispatch_msg(message):
     _markup.add(types.KeyboardButton('Главное меню 🟡'))
 
     bot.send_message(chat_id=_chat_id,
-                     text='<b><i>Сообщение было отправлено</i></b> ✅',
+                     text='<b><i>Отправка началась</i></b> 🟡',
                      reply_markup=_markup,
                      parse_mode='html')
 
     start_mailing(_chat_id, _msg_ids)
+
+    bot.send_message(chat_id=_chat_id,
+                     text='<b><i>Сообщение было отправлено</i></b> ✅',
+                     parse_mode='html')
 
 
 @bot.message_handler(is_admin=True, func=lambda message: message.text in ['Главное меню 🟡'])
