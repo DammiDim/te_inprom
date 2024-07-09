@@ -38,6 +38,7 @@ def message_everyone(message):
                      text='<b><i>Сообщение было отправлено</i></b> ✅',
                      parse_mode='html')
 
+
 @bot.message_handler(
     func=lambda message: message.text in [
         '❗ Отправить сообщение всем ❗',

@@ -44,17 +44,19 @@ def mailing_msg(current_chat_id, limit):
                 _chat_id = i['chat_id']
                 _date = i['date']
 
+                _mail_bot.copy_messages(_chat_id, current_chat_id, _message_ids)
                 _sqlDB.iud("UPDATE msg_queue SET status = ? WHERE date = ?",
                            (1, _date))
-                _mail_bot.copy_messages(_chat_id, current_chat_id, _message_ids)
 
                 _msgs.remove(i)
-                sleep(0.03)
+                sleep(0.04)
 
             except ApiTelegramException as e:
                 if 'USER_IS_BLOCKED' in e.description:
                     _sqlDB.iud("UPDATE users SET status = ? WHERE telegram_id = ?",
                                (USER_STATUS_LOCKED, _telegram_id))
+                else:
+                    print(e.description)
 
         _msgs = get_selection_msg(limit)
 
