@@ -34,7 +34,9 @@ def message_everyone(message):
     _message_id = message.message_id
 
     mailing_msg(_chat_id, 20)
-
+    bot.send_message(chat_id=_chat_id,
+                     text='<b><i>Сообщение было отправлено</i></b> ✅',
+                     parse_mode='html')
 
 @bot.message_handler(
     func=lambda message: message.text in [
