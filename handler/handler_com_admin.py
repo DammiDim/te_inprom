@@ -6,7 +6,7 @@ from data.loader import bot
 from data.texts import t_welcome
 from database.sql_db import SqlDB
 from keyboard.replay.reply_button import welcome_btn
-from utils.mailing import start_mailing
+from utils.mailing import start_mailing, mailing_msg, get_selection_msg
 
 _msg_ids = []
 _check = 0
@@ -20,9 +20,20 @@ def welcome(message):
     markup.add(
         types.KeyboardButton('❗ Отправить сообщение всем ❗'),
         types.KeyboardButton('❗ Выгрузить базу ❗'),
+        types.KeyboardButton('❗ Проверить очередь ❗'),
     )
 
     bot.send_message(message.chat.id, t_welcome, reply_markup=markup)
+
+
+@bot.message_handler(
+    func=lambda message: message.text == '❗ Проверить очередь ❗', is_admin=True)
+def message_everyone(message):
+
+    _chat_id = message.chat.id
+    _message_id = message.message_id
+
+    mailing_msg(_chat_id, 20)
 
 
 @bot.message_handler(
@@ -104,6 +115,7 @@ def back_mainmenu(message):
     markup.add(
         types.KeyboardButton('❗ Отправить сообщение всем ❗'),
         types.KeyboardButton('❗ Выгрузить базу ❗'),
+        types.KeyboardButton('❗ Проверить очередь ❗'),
     )
 
     bot.delete_message(chat_id, message_id)
