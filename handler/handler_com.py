@@ -38,24 +38,34 @@ def welcome(message):
     bot.send_message(message.chat.id, t_welcome, reply_markup=_markup)
 
 
-@bot.message_handler(commands=["help"])
-@bot.message_handler(func=lambda message: message.text == '🔸 Задать вопрос 🔸')
-def ask_question(message):
-    global _msg_id
-    _msg_id = message.id
-
-    _markup = ask_btn()
-
-    _text = 'Наша команда готова ответить на любые ваши вопросы ежедневно с 8:00 до 18:00 (Екатеринбург, GMT +05:00)'
-
-    bot.send_message(
-        message.chat.id,
-        f'<b><i>{_text}</i></b>',
-        reply_markup=_markup, parse_mode='html')
-
-
 ####################################################################################################
 ###################################### ОБРАБОТЧИК СООБЩЕНИЙ ########################################
+
+
+@bot.message_handler(func=lambda message: 'Фотоотчет' in message.text)
+def exhibition(message):
+    _chat_id = message.chat.id
+    _text = 'Фотоотчет ИННОПРОМ-2024'
+
+    _markup = types.InlineKeyboardMarkup(row_width=1)
+    _markup.add(
+        types.InlineKeyboardButton(text='Подробнее', url=r'https://expo.innoprom.com/photo_galereya')
+    )
+
+    bot.send_message(_chat_id, text=_text, reply_markup=_markup)
+
+
+@bot.message_handler(func=lambda message: 'Итоги ИННОПРОМ' in message.text)
+def exhibition(message):
+    _chat_id = message.chat.id
+    _text = 'ИННОПРОМ-2024: подведены итоги выставки'
+
+    _markup = types.InlineKeyboardMarkup(row_width=1)
+    _markup.add(
+        types.InlineKeyboardButton(text='Подробнее', url=r'https://expo.innoprom.com/photo_galereya')
+    )
+
+    bot.send_message(_chat_id, text=_text, reply_markup=_markup)
 
 
 @bot.message_handler(func=lambda message: message.text == 'О выставке')

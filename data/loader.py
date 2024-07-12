@@ -13,6 +13,5 @@ def set_new_com():
     bot.set_my_commands(
         commands=[
             types.BotCommand("start", "Запустить бота"),
-            types.BotCommand("help", "Техподдержка"),
         ]
     )
